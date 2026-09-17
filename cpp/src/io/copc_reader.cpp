@@ -140,6 +140,8 @@ std::vector<char> Reader::GetPointDataCompressed(Node const &node)
     in_stream_->seekg(node.offset);
 
     std::vector<char> out;
+    if (node.byte_size <= 0)
+        return out;
     out.resize(node.byte_size);
     in_stream_->read(&out[0], node.byte_size);
     return out;
