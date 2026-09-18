@@ -111,11 +111,14 @@ Entry WriterInternal::WriteNode(const std::vector<char> &in, int32_t point_count
 {
     Entry entry;
 
-    if (in.empty()) {
+    if (in.empty())
+    {
         entry.offset = static_cast<uint64_t>(out_stream_.tellp());
         entry.byte_size = 0;
         entry.point_count = 0;
-    } else {
+    }
+    else
+    {
         entry.point_count = WriteChunk(in, point_count, compressed, &entry.offset, &entry.byte_size);
     }
 

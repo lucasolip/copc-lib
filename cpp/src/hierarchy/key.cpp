@@ -106,18 +106,12 @@ bool VoxelKey::Intersects(const CopcInfo &copc_info, const Box &box) const
 {
     return Box(*this, copc_info).Intersects(box);
 }
-bool VoxelKey::Contains(const CopcInfo &copc_info, const Box &box) const
-{
-    return Box(*this, copc_info).Contains(box);
-}
+bool VoxelKey::Contains(const CopcInfo &copc_info, const Box &box) const { return Box(*this, copc_info).Contains(box); }
 bool VoxelKey::Contains(const CopcInfo &copc_info, const Vector3 &point) const
 {
     return Box(*this, copc_info).Contains(point);
 }
-bool VoxelKey::Within(const CopcInfo &copc_info, const Box &box) const
-{
-    return Box(*this, copc_info).Within(box);
-}
+bool VoxelKey::Within(const CopcInfo &copc_info, const Box &box) const { return Box(*this, copc_info).Within(box); }
 bool VoxelKey::Crosses(const CopcInfo &copc_info, const Box &box) const
 {
     return Box(*this, copc_info).Intersects(box) && !Box(*this, copc_info).Within(box);
