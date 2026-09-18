@@ -217,7 +217,7 @@ std::vector<Node> Reader::GetNodesWithinBox(const Box &box, double resolution)
 
     for (const auto &node : GetAllNodes())
     {
-        if (node.key.Within(config_.LasHeader(), box) && node.key.d <= max_depth)
+        if (node.key.Within(config_.CopcInfo(), box) && node.key.d <= max_depth)
             out.push_back(node);
     }
 
@@ -233,7 +233,7 @@ std::vector<Node> Reader::GetNodesIntersectBox(const Box &box, double resolution
     // Get all nodes in octree
     for (const auto &node : GetAllNodes())
     {
-        if (node.key.Intersects(config_.LasHeader(), box) && node.key.d <= max_depth)
+        if (node.key.Intersects(config_.CopcInfo(), box) && node.key.d <= max_depth)
             out.push_back(node);
     }
 
@@ -251,12 +251,12 @@ las::Points Reader::GetPointsWithinBox(const Box &box, double resolution)
         if (node.key.d <= max_depth)
         {
             // If node fits in Box
-            if (node.key.Within(config_.LasHeader(), box))
+            if (node.key.Within(config_.CopcInfo(), box))
             {
                 // If the node is within the box add all points
                 out.AddPoints(GetPoints(node));
             }
-            else if (node.key.Intersects(config_.LasHeader(), box))
+            else if (node.key.Intersects(config_.CopcInfo(), box))
             {
                 // If the node only crosses the box then get subset of points within box
                 auto points = GetPoints(node);
@@ -351,7 +351,7 @@ bool Reader::ValidateSpatialBounds(bool verbose)
     {
 
         // Check if node intersects las header bounds
-        if (!Box(node.key, header).Intersects(header.Bounds()))
+        if (!Box(node.key, config_.CopcInfo()).Intersects(header.Bounds()))
         {
             is_valid = false;
             if (!verbose)
@@ -364,7 +364,7 @@ bool Reader::ValidateSpatialBounds(bool verbose)
         {
             auto points = GetPoints(node);
             // If node not within las header bounds then check individual points
-            if (!Box(node.key, header).Within(header.Bounds()))
+            if (!Box(node.key, config_.CopcInfo()).Within(header.Bounds()))
             {
                 for (auto const &point : points)
                 {
@@ -381,7 +381,7 @@ bool Reader::ValidateSpatialBounds(bool verbose)
                 }
             }
             // Check that points fall within the node bounds
-            auto box = Box(node.key, header);
+            auto box = Box(node.key, config_.CopcInfo());
             for (auto const &point : points)
             {
                 if (!point->Within(box))
